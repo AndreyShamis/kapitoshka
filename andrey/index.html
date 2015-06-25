@@ -50,7 +50,7 @@
         </style>
 		<script src="/script/three.min.js"></script>
         <script src="/script/jquery-2.1.4.min.js"></script>
-
+        <script src="/script/common.js"></script>
 	</head>
 	<body>
     <div id="canvas"> </div>
@@ -65,7 +65,7 @@
 			var savedLatitude;
 			
 			// panoramas background
-			var panoramasArray = ["01.jpg","02.jpg","03.jpg","04.jpg","05.jpg","06.jpg"];
+			var panoramasArray = ["01.jpg","02.jpg","03.jpg","04.jpg","05.jpg","06.jpg","12.jpg","13.jpg"];
 			var panoramaNumber = Math.floor(Math.random()*panoramasArray.length);
 
 
@@ -89,7 +89,7 @@
 
 			// creation of the sphere material
 			var sphereMaterial = new THREE.MeshBasicMaterial();
-			sphereMaterial.map = THREE.ImageUtils.loadTexture("/image/"+panoramasArray[panoramaNumber])
+			sphereMaterial.map = THREE.ImageUtils.loadTexture(getImagePath(panoramasArray[panoramaNumber]))
 
 			// geometry + material = mesh (actual object)
 			var sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
@@ -189,7 +189,7 @@
                 // wheelDelta не дает возможность узнать количество пикселей
                 var delta = e.deltaY ||  e.wheelDelta; //e.detail ||
 //                var  delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-                var zoomFactor = (1-1/delta);
+                var zoomFactor = (1+1/delta);
                 console.log(zoomFactor);
 
                 if(!manualControl){
@@ -229,14 +229,14 @@
 			// pressing a key (actually releasing it) changes the texture map
 			document.onkeyup = function(event){
 			
-				panoramaNumber = (panoramaNumber + 1) % panoramasArray.length
-				sphereMaterial.map = THREE.ImageUtils.loadTexture("/image/"+panoramasArray[panoramaNumber])
+				panoramaNumber = (panoramaNumber + 1) % panoramasArray.length;
+				sphereMaterial.map = THREE.ImageUtils.loadTexture(getImagePath(panoramasArray[panoramaNumber]));
 			
             }
             document.touchend = function(event){
 
-                panoramaNumber = (panoramaNumber + 1) % panoramasArray.length
-                sphereMaterial.map = THREE.ImageUtils.loadTexture("/image/"+panoramasArray[panoramaNumber])
+                panoramaNumber = (panoramaNumber + 1) % panoramasArray.length;
+                sphereMaterial.map = THREE.ImageUtils.loadTexture(getImagePath(panoramasArray[panoramaNumber]));
 
             }
 
