@@ -9,8 +9,8 @@
 				height: 100%
 			}
 		</style>
-		<script src="three.min.js"></script>
-        <script src="jquery-2.1.4.min.js"></script>
+		<script src="./three.min.js"></script>
+
 
 	</head>
 	<body>
@@ -25,7 +25,7 @@
 			var savedLatitude;
 			
 			// panoramas background
-			var panoramasArray = ["01.jpg","02.jpg","03.jpg","04.jpg","05.jpg","06.jpg"];
+			var panoramasArray = ["01.jpg","02.jpg","03.jpg","04.jpg","05.jpg","06.jpg","07.jpg","08.jpg","09.jpg","10.jpg","11.jpg"];
 			var panoramaNumber = Math.floor(Math.random()*panoramasArray.length);
 
 			// setting up the renderer
@@ -45,19 +45,57 @@
 			sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
 
 			// creation of the sphere material
-			var sphereMaterial = new THREE.MeshBasicMaterial();
-			sphereMaterial.map = THREE.ImageUtils.loadTexture(panoramasArray[1])
+			var sphereMaterial = new THREE.MeshBasicMaterial( { color: 0x00ff00 });
+			sphereMaterial.map = THREE.ImageUtils.loadTexture(panoramasArray[6])
 
 			// geometry + material = mesh (actual object)
 			var sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
 			scene.add(sphereMesh);
+                        
+                        //----------my aditions-----/////
+                        //simple cube
+                        var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+			var material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+			var cube = new THREE.Mesh( geometry, material );
+                        cube.position.set(10, 0, 3);
+			scene.add( cube );
+                        
+                        // Box using image matirial
+                         var material = new THREE.MeshLambertMaterial({
+                            map: THREE.ImageUtils.loadTexture('http://www.html5canvastutorials.com/demos/assets/crate.jpg')
+                          });
+
+                          // cube
+                          var box = new THREE.Mesh(new THREE.CubeGeometry(200, 200, 200), material);
+                          box.overdraw = true;
+                          box.rotation.x = Math.PI * 0.1;
+                          box.position.set(1000, 1000, 100);
+                          scene.add(box);
+
+                          // add subtle ambient lighting
+                          //var ambientLight = new THREE.AmbientLight(0xbbbbbb);
+                          //scene.add(ambientLight);
+
+                          // directional lighting
+                          //var directionalLight = new THREE.DirectionalLight(0xffffff);
+                          //directionalLight.position.set(1, 1, 1).normalize();
+                          //scene.add(directionalLight);
+                        
+                        
+                        
+                        
+                        
+                        
+                        //------End of My addition at this section---------///
+                        
+                        
 
 			// listeners
 			document.addEventListener("mousedown", onDocumentMouseDown, false);
 			document.addEventListener("mousemove", onDocumentMouseMove, false);
 			document.addEventListener("mouseup", onDocumentMouseUp, false);
             document.addEventListener("ontouchmove",  onDocumentOnTouchMove, false);
-            document.addEventListener("ouchend",  onDocumentTouchend, false);
+            document.addEventListener("touchend",  onDocumentTouchend, false);
             document.addEventListener("touchstart",  onDocumenttouchstart, false);
                render();
                
@@ -66,7 +104,7 @@
 				requestAnimationFrame(render);
 				
 				if(!manualControl){
-					longitude += 0.1;
+					longitude += -0.01;
 				}
 
 				// limiting latitude from -85 to 85 (cannot point to the sky or under your feet)
@@ -77,6 +115,16 @@
 				camera.target.y = 500 * Math.cos(THREE.Math.degToRad(90 - latitude));
 				camera.target.z = 500 * Math.sin(THREE.Math.degToRad(90 - latitude)) * Math.sin(THREE.Math.degToRad(longitude));
 				camera.lookAt(camera.target);
+                                
+                                
+                                //sphereMesh
+				//sphereMaterial.map = THREE.ImageUtils
+                                
+                                        
+                                cube.position.z += 0.01;
+                                cube.position.y += 0.01;
+                                cube.rotation.x += 0.001;
+				cube.rotation.y += 0.001;
 
 				// calling again render function
 				renderer.render(scene, camera);
@@ -151,6 +199,8 @@
 			
 				panoramaNumber = (panoramaNumber + 1) % panoramasArray.length
 				sphereMaterial.map = THREE.ImageUtils.loadTexture(panoramasArray[panoramaNumber])
+                                //ILIA: Importante property for shadeout the sphere and so...
+                                sphereMaterial.color.setHex( Math.random() * 0xffffff );
 			
             }
             document.touchend = function(event){

@@ -48,8 +48,8 @@
                 overflow: auto;
             }
         </style>
-		<script src="three.min.js"></script>
-        <script src="jquery-2.1.4.min.js"></script>
+		<script src="/script/three.min.js"></script>
+        <script src="/script/jquery-2.1.4.min.js"></script>
 
 	</head>
 	<body>
@@ -89,7 +89,7 @@
 
 			// creation of the sphere material
 			var sphereMaterial = new THREE.MeshBasicMaterial();
-			sphereMaterial.map = THREE.ImageUtils.loadTexture(panoramasArray[panoramaNumber])
+			sphereMaterial.map = THREE.ImageUtils.loadTexture("/image/"+panoramasArray[panoramaNumber])
 
 			// geometry + material = mesh (actual object)
 			var sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
@@ -100,7 +100,7 @@
 			document.addEventListener("mousemove", onDocumentMouseMove, false);
 			document.addEventListener("mouseup", onDocumentMouseUp, false);
             document.addEventListener("ontouchmove",  onDocumentOnTouchMove, false);
-            document.addEventListener("ouchend",  onDocumentTouchend, false);
+            document.addEventListener("ontouchend",  onDocumentTouchend, false);
             document.addEventListener("touchstart",  onDocumenttouchstart, false);
 
                render();
@@ -163,8 +163,6 @@
                 if(manualControl){
                     longitude = (savedX - event.clientX) * 0.1 + savedLongitude;
                     latitude = (event.clientY - savedY) * 0.1 + savedLatitude;
-                    var zoomFactor = 0.9;
-                    camera.fov *= zoomFactor;
                     camera.updateProjectionMatrix();
                 }
                 //console.log("onDocumentMouseMove");
@@ -191,11 +189,20 @@
                 // wheelDelta не дает возможность узнать количество пикселей
                 var delta = e.deltaY ||  e.wheelDelta; //e.detail ||
 //                var  delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-                var zoomFactor = 1*(1-1/delta);
+                var zoomFactor = (1-1/delta);
                 console.log(zoomFactor);
-                camera.fov *= zoomFactor;
+
                 if(!manualControl){
+                    camera.fov *= zoomFactor;
+                    if(camera.fov < 10){
+                        camera.fov = 10;
+                    }
+                    if(camera.fov > 89){
+                        camera.fov = 89;
+                    }
                     camera.updateProjectionMatrix();
+                    console.log(camera.fov);
+                    console.log("zoomFactor:"+ zoomFactor);
                 }
                 // wheelDelta не дает возможность узнать количество пикселей
                 //var delta = e.deltaY || e.detail || e.wheelDelta;
@@ -223,13 +230,13 @@
 			document.onkeyup = function(event){
 			
 				panoramaNumber = (panoramaNumber + 1) % panoramasArray.length
-				sphereMaterial.map = THREE.ImageUtils.loadTexture(panoramasArray[panoramaNumber])
+				sphereMaterial.map = THREE.ImageUtils.loadTexture("/image/"+panoramasArray[panoramaNumber])
 			
             }
             document.touchend = function(event){
 
                 panoramaNumber = (panoramaNumber + 1) % panoramasArray.length
-                sphereMaterial.map = THREE.ImageUtils.loadTexture(panoramasArray[panoramaNumber])
+                sphereMaterial.map = THREE.ImageUtils.loadTexture("/image/"+panoramasArray[panoramaNumber])
 
             }
 
