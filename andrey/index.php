@@ -1,57 +1,11 @@
-<html>
-	<head>
-		<style>
-			body{
-				margin: 0;
-			}
-			canvas{
-				width: 100%;
-				height: 40%
-			}
-
-            #canvas {
-                background-color: #000;
-                width: 100px;
-                height: 100px;
-                border: 1px solid black;
-                /*margin: 100px;*/
-                padding: 0px;
-                position: static; /* fixed or static */
-            }
-
-        </style>
-        <style>
-            .black_overlay{
-                display: none;
-                position: absolute;
-                top: 0%;
-                left: 0%;
-                width: 100%;
-                height: 100%;
-                background-color: black;
-                z-index:1001;
-                -moz-opacity: 0.8;
-                opacity:.80;
-                filter: alpha(opacity=80);
-            }
-            .white_content {
-                display: none;
-                position: absolute;
-                top: 25%;
-                left: 25%;
-                width: 30%;
-                height: 50%;
-                padding: 16px;
-                border: 16px solid orange;
-                background-color: white;
-                z-index:1002;
-                overflow: auto;
-            }
-        </style>
-		<script src="/script/three.min.js"></script>
-        <script src="/script/jquery-2.1.4.min.js"></script>
-        <script src="/script/common.js"></script>
-	</head>
+<?php
+/**.
+ * User: Andrey Shamis
+ * Date: 5/25/15
+ * Time: 12:29 PM
+ */
+require_once( realpath( dirname( __FILE__ ) ).'/../HTML_HEADER.php');
+?>
 	<body>
     <div id="canvas"> </div>
 		<script>
